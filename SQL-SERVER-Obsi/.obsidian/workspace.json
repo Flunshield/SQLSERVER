@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "1440dd7ca2a8662a",
+        "id": "7d7999a2b9e5d51b",
         "type": "tabs",
         "children": [
           {
-            "id": "c1b146360c6e6bf7",
+            "id": "7a683a3c31f6abd8",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Note importante.md",
+                "file": "Prise de note/3-Requete SQL.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Note importante.md",
+                "file": "Prise de note/3-Requete SQL.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Note importante.md",
+                "file": "Prise de note/3-Requete SQL.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Note importante.md"
+                "file": "Prise de note/3-Requete SQL.md"
               }
             }
           }
@@ -146,21 +146,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c1b146360c6e6bf7",
+  "active": "7a683a3c31f6abd8",
   "lastOpenFiles": [
-    "1-Prise de note.md",
-    "Note importante.md",
-    "2-Script.md",
+    "Prise de note/1-Prise de note.md",
+    "Prise de note/3-Requete SQL.md",
+    "Prise de note/2-Script.md",
     "Information hors cours.md",
-    "6 1.png",
-    "6.png",
-    "0.png",
+    "Prise de note/Note importante.md",
+    "Prise de note",
+    "Pasted image 20230306141325.png",
+    "Pasted image 20230306140936.png",
+    "Pasted image 20230306135221.png",
+    "Pasted image 20230306135155.png",
+    "image 6 1.png",
+    "image6.png",
+    "image0.png",
     "9.png",
     "8.png",
-    "Pasted image 20230306103146.png",
-    "Pasted image 20230306102847.png",
-    "Pasted image 20230306102726.png",
-    "Pasted image 20230306100609.png",
-    "Pasted image 20230306094232.png"
+    "Pasted image 20230306103146.png"
   ]
 }

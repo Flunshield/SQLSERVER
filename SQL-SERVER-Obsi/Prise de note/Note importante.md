@@ -20,7 +20,20 @@ Pour une clé primaire, les meilleurs types sont :
 	- bigint
 	- uniqueidentifier
 
-Quelle instruction du DDL pour créer un élément : CREATE
+Quelle instruction du DDL pour créer un élément : CREATE ou cette commande : 
+ Cette requete SQL permet de créé une table temporaire et persistante (enregistré sur le disque dur) :
+```sql
+select * into table1 from 
+(
+select 'A2' Lettre
+UNION ALL
+select 'B2' Lettre
+UNION ALL
+select 'C2' Lettre
+UNION ALL
+select 'D2' Lettre
+) nomdelatable
+```
 
 Quelle instruction du DML pour créer un élément  : INSERET / SELECT
 
@@ -69,3 +82,5 @@ Quelles classes utiliser en mode connecté ?
 - SqlCommand
 - SqlDataReader
 - dataset
+
+Une jointure ets plus rapide est plus rapide q'un where.

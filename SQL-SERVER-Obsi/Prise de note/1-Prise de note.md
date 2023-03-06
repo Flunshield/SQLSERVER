@@ -1,4 +1,4 @@
-![[0.png]]
+![[image0.png]]
 
 -   **La BDD hiérarchique**. Souvent présentée sous forme d’arbre avec ses ramifications, il s’agit du tout premier programme qui a permis de structurer l’information de façon hiérarchique. Ici, chaque enregistrement dépend d’un seul enregistrement, et chaque niveau d’enregistrement découle sur un ensemble de catégories plus petites. 
     
@@ -69,7 +69,7 @@ Toujours utiliser que des lettre simple, des chiffre, des underscores, INTERDIT 
 
 Le SQL n'ets aps sensible à la casse.
 
-![[6.png]]
+![[image6.png]]
 
 ## Clef primaire
 clef primaire : **Une clé primaire est un champ ou un ensemble de champs de table qui contient des valeurs uniques**. Les valeurs de la clé peuvent être utilisées pour faire référence à des enregistrements entiers, car chaque enregistrement dispose d'une valeur différente pour la clé.
@@ -104,7 +104,7 @@ Les jointures sont des requettes SQL.
 
 Quand j'installe SQL Server, j'installe une instance, quand j'installe une instance, je nomme cette instance.
 
-![[6 1.png]]
+![[image 6 1.png]]
 
 Une instance = 1 SQL SERVER (1 service (Dans le cours c'est un service Windows))
 Trois instance = 3 SQL SERVER
@@ -179,3 +179,27 @@ char = prend 1 octet, char(50) prend 50 octets.
 nvarchar = prend au maximum 50 charactère.
 
 **Un champ identity est un champ automatique.**
+
+## Requete SQL
+
+Il existe 4 type de requetes :
+- DML (Data manipulation Langue) + CRUD (create read update delete)
+	- SELECT 
+	- INSERT
+	- UPDATE
+	- DELETE
+- DDL (Data Description Language)
+	-Instruction :
+	- Tout les CREATE
+	- Tout les halteres (modifié)
+	- Tout les drop (Supprimé)
+- DCL (Data Controle Language)
+	- Instruction :
+		- Grant (autorisation)
+		- DENY 
+		- REVOKE
+- TCL (Transaction controle Language)
+	- Instruction
+		- Bguin Tran
+		- Commit
+		- Rollback
