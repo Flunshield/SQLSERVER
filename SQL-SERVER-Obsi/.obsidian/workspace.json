@@ -8,43 +8,18 @@
         "type": "tabs",
         "children": [
           {
-            "id": "8179c4cd262868b8",
+            "id": "c1b146360c6e6bf7",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Prise de note.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "3aa1e5ec3b053c0e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Lexique.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "61cf0c0ca3a14c2c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Information hors cours.md",
+                "file": "Note importante.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -110,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Information hors cours.md",
+                "file": "Note importante.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Information hors cours.md",
+                "file": "Note importante.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Information hors cours.md"
+                "file": "Note importante.md"
               }
             }
           }
@@ -171,9 +146,21 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "61cf0c0ca3a14c2c",
+  "active": "c1b146360c6e6bf7",
   "lastOpenFiles": [
-    "Lexique.md",
-    "Prise de note.md"
+    "1-Prise de note.md",
+    "Note importante.md",
+    "2-Script.md",
+    "Information hors cours.md",
+    "6 1.png",
+    "6.png",
+    "0.png",
+    "9.png",
+    "8.png",
+    "Pasted image 20230306103146.png",
+    "Pasted image 20230306102847.png",
+    "Pasted image 20230306102726.png",
+    "Pasted image 20230306100609.png",
+    "Pasted image 20230306094232.png"
   ]
 }
