@@ -203,3 +203,23 @@ Il existe 4 type de requetes :
 		- Bguin Tran
 		- Commit
 		- Rollback
+
+## Construction requete sql avec inner join
+Pour construire une requête SQL comme celle-ci :
+```SQL
+SELECT sp.BusinessEntityID, p.FirstName, p.LastName, SUM(soh.SalesOrderID) AS TotalSales FROM Sales.SalesPerson sp 
+INNER JOIN Person.Person p ON sp.BusinessEntityID = p.BusinessEntityID 
+INNER JOIN Sales.SalesOrderHeader soh ON sp.BusinessEntityID = soh.SalesPersonID 
+INNER JOIN Sales.SalesOrderDetail sod ON soh.SalesOrderID = sod.SalesOrderID 
+GROUP BY sp.BusinessEntityID, p.FirstName, p.LastName
+```
+
+1.  Identifier les tables à utiliser et les colonnes nécessaires : Dans cette requête, les tables Sales.SalesPerson, Person.Person, Sales.SalesOrderHeader et Sales.SalesOrderDetail sont utilisées, et les colonnes BusinessEntityID, FirstName, LastName et SalesOrderID sont sélectionnées.
+    
+2.  Déterminer les clés de jointure entre les tables : Dans cette requête, la clé de jointure est BusinessEntityID pour la table Sales.SalesPerson et Person.Person, SalesPersonID pour la table Sales.SalesOrderHeader et Sales.SalesPerson, et SalesOrderID pour les tables Sales.SalesOrderHeader et Sales.SalesOrderDetail.
+    
+3.  Écrire la requête SQL : En utilisant les tables et les colonnes identifiées, écrire la requête SQL en utilisant les INNER JOIN pour joindre les tables et les clés de jointure pour spécifier comment les tables doivent être jointes. Dans cette requête, la fonction d'agrégation SUM est utilisée pour calculer le montant total des ventes pour chaque vendeur.
+    
+4.  Ajouter une clause GROUP BY : Pour agréger les résultats par vendeur, ajouter une clause GROUP BY avec les colonnes utilisées dans la sélection.
+    
+5.  Exécuter la requête : Exécuter la requête pour récupérer les résultats.
