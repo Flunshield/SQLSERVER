@@ -1,5 +1,5 @@
 Une requête TSQL renvoie du XML et des tables.
-
+Eviter le select * !!!!!
 Une application utilisée pour la gestion de BD : managment studio.
 
 Un serveur possède trois instances de SQL Server. Cela signifie que SQL Server a été installé 3 fois.
@@ -83,4 +83,44 @@ Quelles classes utiliser en mode connecté ?
 - SqlDataReader
 - dataset
 
-Une jointure ets plus rapide est plus rapide q'un where.
+Une jointure est plus rapide est plus rapide q'un where.
+
+# Vocabulaire
+
+Une table peut être :
+- **temporaire** ou **permanente/persistante**.
+
+```SQL
+select * into t from person -- La table t sera persistante et permanante (enregistré sur le disque dur (permanente))
+
+select * into #t from person -- La table t sera persistante et temporaire (supprimé lors de la déconnexion au serveur ou le temps de la procédure)
+
+select * into ##t from person -- La table t sera persistante, temporaire et partagé (supprimé lors de la déconnexion au serveur)
+
+```
+
+
+## Common table expression
+La table sera volatile et temporaire. Elle sera plus rapide car elle sera stocké en mémoire, mais nous serons limité en taille.
+
+L'expression de table commune (CTE) est une construction puissante en SQL qui permet de simplifier une requête. Les CTE fonctionnent comme des tables virtuelles (avec des enregistrements et des colonnes), créées lors de l'exécution d'une requête, utilisées par la requête et éliminées après l'exécution de la requête.
+
+5 à 10 fois plus vite qu'une table normal.
+
+```sql
+use AdventureWorks2017
+-- CTE
+WITH t(id, nom) -- avec la table temporaire t
+AS 
+(
+select ProductID, [Name] from Production.product -- remplit avec les champs ProductID et [Name] 
+)
+select * from t -- je sélectionne tout dans la table tempo t
+```
+
+C# est apparu a partir de .NET.
+
+Historiquement c'est comme ça :
+COM
+.Net = windows Vista, office 2007, SQL server 2005....
+Core .Net = SQL server 20017, IIS, ASP.Net, WPF (Blazor, MAUI...)

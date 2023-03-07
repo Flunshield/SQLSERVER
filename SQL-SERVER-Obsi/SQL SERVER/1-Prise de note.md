@@ -223,3 +223,149 @@ GROUP BY sp.BusinessEntityID, p.FirstName, p.LastName
 4.  Ajouter une clause GROUP BY : Pour agréger les résultats par vendeur, ajouter une clause GROUP BY avec les colonnes utilisées dans la sélection.
     
 5.  Exécuter la requête : Exécuter la requête pour récupérer les résultats.
+
+## Les procédures stockées
+
+Ne pas s'inquiété si on perd la procédure stocké car elle est dans la bdd.
+Une procédure stocké doit répondre au plus grand nombre de besoin.
+
+### Créer/Modifier/Exécuter une procédure
+```SQL
+-- On créé la procédure stocké
+CREATE PROC ListeProduit --(nom que l'on veut)
+AS 
+	SELECT 
+		ProductID, Color, ListPrice, ProductNumber
+	FROM 
+		Production.Product
+Go
+-- On éxécute la procédure stocké
+Exec ListeProduits
+
+-- On modifi la procédure pour une couleur
+ALTER PROC ListeProduit(@couleur nvarchar(MAX)) --(nom que l'on veut)
+AS 
+	SELECT 
+		ProductID, Color, ListPrice, ProductNumber
+	FROM 
+		Production.Product
+	WHERE 
+		Color = @couleur
+Go
+-- On éxécute la procédure stocké pour changer la couleur
+Exec ListeProduits 'silver'
+Exec ListeProduits -- fait office de if si deuxieme Exec
+
+```
+
+Avec l'opérateur AND
+```SQL
+-- On modifi la procédure pour une couleur
+ALTER PROC ListeProduit(@couleur nvarchar(15)=null, @seuil money=null, @type char(2)=null) --(nom que l'on veut)
+AS 
+	SELECT 
+		ProductID, Color, ListPrice, ProductNumber
+	FROM 
+		Production.Product
+	WHERE 
+		(@couleur is null or color=@couleur)
+		and
+		(@seuil is null or ListPrice > @seuil)
+		and
+		(@type is null or LEFT(ProductNumber, 2) = @type)
+Go
+-- On éxécute la procédure stocké pour changer la couleur
+Exec ListeProduits 'silver', '10' -- on recherche une couleur silver ou un prix minimum à 10
+Exec ListeProduits
+Exec ListeProduits @seuil='3000' -- si le paramètre est spécifié, pas besoin de s'occuper de l'ordre
+Exec ListeProduits @type='SO', @Couleur='black'
+
+```
+
+## Le XML
+**Extensible Markup Language** (XML) vous permet de définir et de stocker des données de manière à pouvoir les partager. XML prend en charge l'échange d'informations entre des systèmes informatiques tels que les sites web, les bases de données et les applications tierces.
+
+!! Le HTML est du XML !! => apparut avant le XML.
+
+### Règle xml
+1 - Toute balise doit avoir une ouverte et une fermeture comme du **HTML**..
+2 - Un XML doit etre contenue dans un ``noeud racine``.
+3 - Le XML tient compte de la casse.
+4 - On écrit en minuscule
+5 - Lorsqu'on ajoute des attribu, on met toujours des "" même pour un nombre. // Ne pas en mettre dans les childrens des balises.
+
+Le JSON est censé remplacer le XML mais n'ets pas encore arrivé à son niveau.
+
+L'inconvénient du XML est qu'il est *verbeux* c'est à dire qu'il faut écrire beaucoup pour pas grand chose.
+![[Pasted image 20230307142524.png]]
+
+XAML est un **langage de balisage déclaratif**. Comme appliqué au modèle de programmation . NET, XAML simplifie la création d'une interface utilisateur pour une application .
+
+Caml est un langage de programmation généraliste conçu pour la sécurité et la fiabilité des programmes. Il se prête à des styles de programmation fonctionnelle, impérative et orientée objet. C'est de plus un langage fortement typé.
+
+Le _**Portable Document Format**_, communément [abrégé](https://fr.wikipedia.org/wiki/Abr%C3%A9viation "Abréviation") en **PDF**, est un [langage de description de page](https://fr.wikipedia.org/wiki/Langage_de_description_de_page "Langage de description de page") présenté par la société [Adobe Systems](https://fr.wikipedia.org/wiki/Adobe_(entreprise) "Adobe (entreprise)") en [1992](https://fr.wikipedia.org/wiki/1992_en_informatique "1992 en informatique") et qui est devenu une norme [ISO](https://fr.wikipedia.org/wiki/Organisation_internationale_de_normalisation "Organisation internationale de normalisation") en [2008](https://fr.wikipedia.org/wiki/2008 "2008"). La spécificité du PDF est de préserver la [mise en page](https://fr.wikipedia.org/wiki/Mise_en_page "Mise en page") d’un document — polices de caractères, images, objets graphiques, etc. — telle qu'elle a été définie par son auteur, et cela quels que soient le [logiciel](https://fr.wikipedia.org/wiki/Logiciel "Logiciel"), le [système d'exploitation](https://fr.wikipedia.org/wiki/Syst%C3%A8me_d%27exploitation "Système d'exploitation") et l'[ordinateur](https://fr.wikipedia.org/wiki/Ordinateur "Ordinateur") utilisés pour l’imprimer ou le visualiser.
+
+### Type de xml
+
+**XSL** eXtensible Stylesheet Language : Language de programmation qui s'écrit en xml. Il permet de transformer du xml en xml. Il ets universelle.
+	Par exemple du **xml word**en **xml pdf**
+
+**XSD** : C'est un language de description.  On lui donne un xml et il retourne le type : word, pdf..... ( il vérifit le shéma de votre xml.)
+Les fichiers XML Schema Definition (XSD) **permettent de décrire la structure d'un document XML**. Le grand intérêt de ce fichier est de servir à la validation du document XML en définisant des règles.
+
+**XPATH** : Language de programmation. C'est le SQL du XML. On fait des requêtes pour aller chercher des informations dans du XML.
+**XPath** est un [langage de requête](https://fr.wikipedia.org/wiki/Langage_de_requ%C3%AAte "Langage de requête") pour localiser une portion d'un document [XML](https://fr.wikipedia.org/wiki/Extensible_markup_language "Extensible markup language"). Initialement créé pour fournir une syntaxe et une sémantique aux fonctions communes à [XPointer](https://fr.wikipedia.org/wiki/XPointer "XPointer") et [XSL](https://fr.wikipedia.org/wiki/Extensible_stylesheet_language "Extensible stylesheet language"), XPath a rapidement été adopté par les développeurs comme langage d'interrogation simple d'emploi.
+
+HTML : Language de description.
+
+
+### Requete avec du XML
+```SQL
+CREATE PROC ListeProduitsXML (@data xml)
+AS
+	DECLARE @couleur nvarchar(15)
+	DECLARE @seuil money
+	DECLARE @type char(2)
+	-- ******************************************
+	SELECT
+		N.value('@couleur[1]', 'nvarchar(15)') AS couleur,
+		N.value('@seuil[1]', 'money') AS seuil,
+		N.value('type[1]', 'char(2)') AS type
+	FROM
+		@data.nodes('/produit') AS T(N)
+	-- ******************************************
+Go
+Exec ListeProduitsXML '<produit couleur="Blue" seuil="3000"><type>BK</type></produit>'
+
+--************************************************************************************
+CREATE/ALTER PROC ListePersonneXML (@data xml)
+AS
+	DECLARE @prenom nvarchar(MAX)
+	SELECT 
+		@prenom = N.value('@prenom[1]','nvarchar(15)')
+	FROM
+		@data.nodes('/personne') AS T(N)
+	SELECT * from Person.Person where FirstName=@prenom
+Go
+Exec ListePersonneXML '<personne prenom="ken"></personne>'
+
+--**************************************************************************************
+CREATE/ALTER PROC ListePersonneXML (@data xml)
+AS
+	SELECT 
+		N.value('@prenom[1]','nvarchar(15)') prenom
+	INTO #t -- La table tempo disparait a la fin de la procédure
+	FROM
+		@data.nodes('/personnes/personne') AS T(N)
+	SELECT BusinessEntityID, FirstName, LastName, PersonType 
+	FROM Person.Person 
+	WHERE FirstName IN (prenom FROM #t)
+Go
+Exec ListePersonneXML 
+	'<personne>
+		<personne prenom="Robert" type="IM"/>
+		<personne prenom="Marie" type="EM"/>
+		<personne prenom="Mary"/>
+	</personne>'
+	
+```

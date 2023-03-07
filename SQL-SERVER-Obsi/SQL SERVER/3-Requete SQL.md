@@ -302,3 +302,4 @@ Pour ajouter l'autorisation d'utiliser els diagrammes de base de donnée sur Adv
 ```SQL
 ALTER AUTHORIZATION ON database::AdventureWorks2017 TO [PC-DEV\jbert]
 ```
+
