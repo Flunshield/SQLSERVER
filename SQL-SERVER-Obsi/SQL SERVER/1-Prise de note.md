@@ -369,3 +369,226 @@ Exec ListePersonneXML
 	</personne>'
 	
 ```
+
+# Integration BDD dans une application
+
+## A l'ancienne
+### Mode déconnecté
+ Dans ce mode, on se connecte à la base de donnée, on charge en mémoire les données qui nous intéressent (dans un **dataset**), puis on ferme la connexion. Le dataset est la représentation en mémoire des données de la base. On les traite (select, insert, delete…). Après le traitement, on met à jour les données en base.
+### Mode connecté
+En mode connecté, **on se connecte à la base et on exécute nos requêtes SQL directement sur la base** (lecture, création, mise à jour, suppression…) en utilisant les objets Connection, Command et DataReader.
+
+### Code en C# pour communiquer avec SQL SERVER
+
+Les command avec sql serveur commence par SQL....
+
+Pour oracle : oracle....
+
+### Lire une bdd
+Le code pour lire lmes données sur un server SQL avec c# :
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AccesDonnees
+{
+    internal class Program
+    {
+        private static SqlCommand cmd;
+        static void Main(string[] args)
+        {
+            SetupConnexion();
+            // ModeDeconnecte();
+            ModeConnecte();
+        }
+
+        private static void SetupConnexion()
+        {
+            //Initialisation d ela connexion avec la bdd SQL SERVER
+            var cnx = new SqlConnection(); //Crée un nouvel objet de type SqlConnexion - Pas d'espace dans le string !
+            cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=True";
+            cnx.Open();
+
+            // Initialisation de la commande
+            cmd = new SqlCommand();
+            cmd.Connection= cnx;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "Select ProductID, Name from Production.Product";
+        }
+
+        private static void ModeDeconnecte()
+        {
+            //Configuration mode déconnecté
+            var adapter = new SqlDataAdapter();
+            var cb = new SqlCommandBuilder(adapter);
+            adapter.SelectCommand = cmd;
+            var ds = new DataSet();
+
+            //Remplissage DataSet avec commande
+            adapter.Fill(ds); //Fill permet de remplir le DataSet
+
+            //Traitement des données
+            foreach(DataRow row in ds.Tables[0].Rows) //Permet de faire une recherche sur toute les ligne de la table 0
+            {
+                Console.WriteLine("{0} - {1}", row["ProductID"], row["Name"]);
+            }
+            adapter.Update(ds);
+            Console.ReadLine();
+        }
+
+        private static void ModeConnecte()
+        {
+            SqlDataReader reader = cmd.ExecuteReader();
+            while(reader.Read())
+            {
+                Console.WriteLine("{0} - {1}", reader["ProductID"], reader["Name"]);
+            }
+            reader.Close(); //Pensez a toujours bien fermer la connection pour la libéré.
+            Console.ReadLine();
+        }
+    }
+}
+
+```
+
+### Update une BDD
+Pour faire un UPDATE en mode connecté :
+
+```SQL
+ private static void ModeConnecte()
+        {
+            cmd.CommandText = "UPDATE Production.Product SET Name = 'BB Ball Bearing, 61' WHERE ProductID=3";
+            var lignes = cmd.ExecuteNonQuery();
+            Console.WriteLine("{0}", lignes);
+        }
+```
+
+```c#
+private static void ModeConnecte()
+        {
+            //Initialisation d ela connexion avec la bdd SQL SERVER
+            var cnx = new SqlConnection(); //Crée un nouvel objet de type SqlConnexion - Pas d'espace dans le string !
+            cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=True";
+            cnx.Open();
+            // Initialisation de la commande
+            cmd = new SqlCommand();
+            cmd.Connection = cnx;
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = @"update Production.Product set ListPrice=ListPrice / 0.9 where LEFT(ProductNumber,2)='BK'";
+            cmd.ExecuteNonQuery();
+        }
+```
+
+### En faisant une procédure stocké
+```SQL
+CREATE PROC Majoration(@pourcentage decimal(18,1))
+AS
+	update Production.Product set ListPrice=ListPrice * @pourcentage 
+	where LEFT(ProductNumber,2)='BK'
+GO
+```
+
+```C#
+private static void ModeConnecteProc()
+        {
+            //Initialisation d ela connexion avec la bdd SQL SERVER
+            var cnx = new SqlConnection(); //Crée un nouvel objet de type SqlConnexion - Pas d'espace dans le string !
+            cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=True";
+            cnx.Open();
+
+            // Initialisation de la commande
+            cmd = new SqlCommand();
+            cmd.Connection = cnx;
+            cmd.CommandType = System.Data.CommandType.StoredProcedure; // On indique qu'il va falloir utiliser une procédure
+            cmd.CommandText = @"Majoration"; //On appelle la procédure
+            cmd.Parameters.Add(new SqlParameter("pourcentage", 1.1)); // On indique le paramèrtre à donner à la procédure
+            cmd.ExecuteNonQuery();
+        }
+```
+
+### Résumé
+
+Cette ligne de code définit la valeur de la propriété `ConnectionString` d'un objet `SqlConnection` ADO.NET pour se connecter à une instance de Microsoft SQL Server s'exécutant localement. La base de données spécifiée est `AdventureWorks2017` et l'authentification intégrée est utilisée via `Integrated Security=True`.
+```c#
+var cnx = new SqlConnection(); 
+cnx.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks2017;Integrated Security=True";
+```
+
+Ce bloc de code configure un objet `SqlCommand` pour exécuter une instruction SQL de type texte qui sélectionne les colonnes `ProductID` et `Name` de la table `Production.Product`.
+
+La première ligne définit le type de commande à exécuter en tant que texte.
+
+La deuxième ligne définit la requête SQL à exécuter pour récupérer les données de la table `Production.Product`. La requête SQL est une instruction SELECT qui sélectionne les colonnes `ProductID` et `Name` de la table `Production.Product`.
+```c#
+cmd.CommandType = System.Data.CommandType.Text;
+            cmd.CommandText = "Select ProductID, Name from Production.Product";
+```
+
+Ce bloc de code crée un objet `SqlDataAdapter` qui utilise l'objet `SqlCommand` créé précédemment pour sélectionner des données à partir d'une base de données SQL Server.
+
+La première ligne crée un nouvel objet `SqlDataAdapter`.
+
+La deuxième ligne définit la propriété `SelectCommand` de l'objet `SqlDataAdapter` pour utiliser l'objet `SqlCommand` créé précédemment.
+
+La troisième ligne crée un nouvel objet `DataSet` pour stocker les données récupérées.
+
+La quatrième ligne crée un nouvel objet `SqlCommandBuilder` à partir de l'objet `SqlDataAdapter`. Cette étape est optionnelle, mais elle peut simplifier le processus de mise à jour des données dans la base de données.
+
+L'objet `SqlCommandBuilder` est capable de générer automatiquement les commandes SQL nécessaires pour mettre à jour les données dans la base de données, en fonction des modifications apportées aux données dans le `DataSet`.
+```c#
+    var adapter = new SqlDataAdapter();
+    adapter.SelectCommand = cmd;
+    var ds = new DataSet();
+    var cb = new SqlCommandBuilder(adapter);
+```
+
+```c# 
+adapter.Fill(ds); //Fill permet de remplir le DataSet
+```
+
+```c#
+//Traitement des données
+            foreach(DataRow row in ds.Tables[0].Rows) //Permet de faire une recherche sur toute les ligne de la table 0
+            {
+                Console.WriteLine("{0} - {1}", row["ProductID"], row["Name"]);
+            }
+            adapter.Update(ds);
+            Console.ReadLine();
+        }
+```
+
+Cette ligne de code utilise l'objet `SqlDataAdapter` créé précédemment pour mettre à jour les modifications apportées aux données dans le `DataSet` dans la base de données sous-jacente.
+
+L'objet `SqlDataAdapter` est configuré avec un objet `SqlCommand` qui contient la requête SQL pour récupérer les données à mettre à jour, ainsi qu'un objet `SqlCommandBuilder` qui est capable de générer les commandes SQL nécessaires pour mettre à jour les données dans la base de données.
+
+Lorsque la méthode `Update` est appelée, l'objet `SqlDataAdapter` compare les données dans le `DataSet` avec les données dans la base de données et génère les commandes SQL nécessaires pour mettre à jour les données dans la base de données en fonction des modifications apportées.
+
+Si les données dans le `DataSet` ont été modifiées, insérées ou supprimées, les modifications correspondantes seront effectuées dans la base de données.
+```c#
+adapter.Update(ds);
+```
+
+## EntityFramework
+
+Equivalent **EntityFramework** chez Java c'est **hibernate**. 
+- **EntityFramework** est mieux d'après le prof car plus récent.
+**EntityFramework** est un **ORM** (_Object Relationnal Mapping_), c'est un système qui permet de faire el lien entre le monde relationnel (SQL SERVER) et le monde réelle (C#).
+
+![[Pasted image 20230308123526.png]]
+
+### Mettre en place Entity Framework
+
+![[Pasted image 20230308133142.png]]
+![[Pasted image 20230308133203.png]]
+
+![[Pasted image 20230308123743.png]]
+
+
+
+
