@@ -124,3 +124,5 @@ Historiquement c'est comme ça :
 COM
 .Net = windows Vista, office 2007, SQL server 2005....
 Core .Net = SQL server 20017, IIS, ASP.Net, WPF (Blazor, MAUI...)
+
+C# et Transact SQL sont de la famille *.net*.

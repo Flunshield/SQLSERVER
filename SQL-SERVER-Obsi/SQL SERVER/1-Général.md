@@ -582,13 +582,87 @@ Equivalent **EntityFramework** chez Java c'est **hibernate**.
 
 ![[Pasted image 20230308123526.png]]
 
+### linq
+- linq to object
+- linq to Entities
+- linq to XML
+- linq to Oracle
+- linq to SQL (mort et remplacer par linq to Entities)
+- linq to DataSet
+- linq to Tweet
+- linq to Javascript
 ### Mettre en place Entity Framework
 
-![[Pasted image 20230308133142.png]]
-![[Pasted image 20230308133203.png]]
+#### Lire les données
+Après avoir connecté la bdd au projet dans visual studio,
+```c#
+        static void Main(string[] args)
+        {
+            var context = new AdventureWorks2017Entities();
+            var tousLesProduits = context.Product;
+            var tousLesVelos = context.Product.Where(x => x.ProductSubcategory.ProductCategory.Name == "Bikes").ToList();
 
-![[Pasted image 20230308123743.png]]
+            tousLesVelos.ForEach(x => x.ListPrice *= 1.1M);
+            context.SaveChanges();
+        }
+```
+
+#### Modifier des données
+
+```c#
+            var context = new AdventureWorks2017Entities();
+            var toutLesKen = context.Person.Where(name => name.FirstName == "ken").ToList();
+
+            toutLesKen.ForEach(person => person.FirstName = "tata");
+            context.SaveChanges();
+```
 
 
+## Configurer SQL Server pour du C#
+```SQL
+-- Etape 1 : Configurer SQL Server pour accepter le .Net
+use master
+go
+sp_configure 'clr enabled', 1
+GO
+RECONFIGURE
+GO
 
+-- Etape 2 :
+CREATE ASYMMETRIC KEY CLRDateConvertionKey FROM EXECUTABLE FILE = 'D:\IsiTech\Depot\ClrSQL\bin\Debug\ClrSQL.dll'
+--select * from Sys.asymmetric_keys
 
+-- Etape 3 :
+CREATE LOGIN CLRDateConvertionKeyLogin FROM ASYMMETRIC KEY CLRDateConvertionKey;
+GRANT UNSAFE ASSEMBLY TO CLRDateConvertionKeyLogin;
+GO
+USE AdventureWorks2017;
+GO
+
+-- Etape 4 : créatin du User
+CREATE USER CLRDateConvertionKeyLogin FOR LOGIN CLRDateConvertionKeyLogin;
+
+-- Etape 5 : installation de l'assembly dans AdventureWorks
+CREATE ASSEMBLY DateConvertAssembly FROM 'D:\IsiTech\Depot\ClrSQL\bin\Debug\ClrSQL.dll' WITH PERMISSION_SET = SAFE;
+GO
+CREATE FUNCTION dbo.Crypte (@cle int, @message NVARCHAR(100))
+RETURNS NVARCHAR(100)
+AS
+EXTERNAL NAME [DateConvertAssembly].[ClrSQL.CryptoSimple].Crypte;
+GO
+CREATE FUNCTION dbo.Decrypte (@cle int, @message NVARCHAR(100))
+RETURNS NVARCHAR(100)
+AS
+EXTERNAL NAME [DateConvertAssembly].[ClrSQL.CryptoSimple].Decrypte;
+GO
+
+-- Test
+DECLARE @message nvarchar(50) = 'ABC'
+DECLARE @messageCrypte nvarchar(50)
+select @messageCrypte = dbo.Crypte(3, @message)
+PRINT @messageCrypte
+select @message = dbo.Decrypte(-3, @messageCrypte)
+PRINT @message
+```
+
+## Signer son code
