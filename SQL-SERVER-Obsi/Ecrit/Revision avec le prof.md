@@ -15,86 +15,82 @@ Créer plusieurs tables et de les manipuler par la suite.
 	-- Func(LieuDepart)
 		--> ListeVols, Pilotes
 
-BEGIN TRANSACTION
+USE [AirFrance]
 GO
-CREATE TABLE dbo.Avion
-	(
-	IdAvion uniqueidentifier NOT NULL,
-	Modele nvarchar(50) NOT NULL,
-	Compagnie nvarchar(50) NULL
-	)  ON [PRIMARY]
-GO
-ALTER TABLE dbo.Avion SET (LOCK_ESCALATION = TABLE)
-GO
-GO
-CREATE TABLE dbo.Pilote
-	(
-	IdPilote uniqueidentifier NOT NULL,
-	Nom nvarchar(50) NOT NULL,
-	Prenom nvarchar(50) NOT NULL,
-	DateNaissance datetime NOT NULL
-	)  ON [PRIMARY]
-GO
-ALTER TABLE dbo.Pilote SET (LOCK_ESCALATION = TABLE)
-GO
-CREATE TABLE dbo.Vol
-	(
-	IdVol uniqueidentifier NOT NULL,
-	DateDepart datetime NOT NULL,
-	DateArrive datetime NULL,
-	IdAvion uniqueidentifier NULL,
-	IdPilote uniqueidentifier NULL,
-	LieuDepart nvarchar(50) NULL,
-	LieuArrivee nvarchar(50) NULL
-	)  ON [PRIMARY]
-GO
-ALTER TABLE dbo.Vol SET (LOCK_ESCALATION = TABLE)
-GO
-GO
-ALTER TABLE dbo.Pilote ADD CONSTRAINT
-	PK_Pilote PRIMARY KEY CLUSTERED 
-	(
-	IdPilote
-	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
+/****** Object:  Table [dbo].[Avion]    Script Date: 09/03/2023 13:36:00 ******/
+SET ANSI_NULLS ON
 GO
-ALTER TABLE dbo.Pilote SET (LOCK_ESCALATION = TABLE)
-GO
-COMMIT
-BEGIN TRANSACTION
-GO
-ALTER TABLE dbo.Avion ADD CONSTRAINT
-	PK_Avion PRIMARY KEY CLUSTERED 
-	(
-	IdAvion
-	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 
+SET QUOTED_IDENTIFIER ON
 GO
-ALTER TABLE dbo.Avion SET (LOCK_ESCALATION = TABLE)
+
+CREATE TABLE [dbo].[Avion](
+	[IdAvion] [uniqueidentifier] NOT NULL,
+	[Modele] [nvarchar](50) NOT NULL,
+	[Compagnie] [nvarchar](50) NULL,
+ CONSTRAINT [PK_Avion] PRIMARY KEY CLUSTERED 
+(
+	[IdAvion] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-ALTER TABLE dbo.Vol ADD CONSTRAINT
-	FK_Vol_Avion FOREIGN KEY
-	(
-	IdAvion
-	) REFERENCES dbo.Avion
-	(
-	IdAvion
-	) ON UPDATE  NO ACTION 
-	 ON DELETE  NO ACTION 
-	
+/****** Object:  Table [dbo].[Pilote]    Script Date: 09/03/2023 13:36:39 ******/
+SET ANSI_NULLS ON
 GO
-ALTER TABLE dbo.Vol ADD CONSTRAINT
-	FK_Vol_Pilote FOREIGN KEY
-	(
-	IdPilote
-	) REFERENCES dbo.Pilote
-	(
-	IdPilote
-	) ON UPDATE  NO ACTION 
-	 ON DELETE  NO ACTION 
-	
+
+SET QUOTED_IDENTIFIER ON
 GO
-ALTER TABLE dbo.Vol SET (LOCK_ESCALATION = TABLE)
+
+CREATE TABLE [dbo].[Pilote](
+	[IdPilote] [uniqueidentifier] NOT NULL,
+	[Nom] [nvarchar](50) NOT NULL,
+	[Prenom] [nvarchar](50) NOT NULL,
+	[DateNaissance] [datetime] NOT NULL,
+ CONSTRAINT [PK_Pilote] PRIMARY KEY CLUSTERED 
+(
+	[IdPilote] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-COMMIT
+/****** Object:  Table [dbo].[Vol]    Script Date: 09/03/2023 13:34:19 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Vol](
+	[IdVol] [uniqueidentifier] NOT NULL,
+	[DateDepart] [datetime] NOT NULL,
+	[DateArrive] [datetime] NULL,
+	[IdAvion] [uniqueidentifier] NULL,
+	[IdPilote] [uniqueidentifier] NULL,
+	[LieuDepart] [nvarchar](50) NULL,
+	[LieuArrivee] [nvarchar](50) NULL,
+ CONSTRAINT [PK_Vol] PRIMARY KEY CLUSTERED 
+(
+	[IdVol] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Vol]  WITH CHECK ADD  CONSTRAINT [FK_Vol_Avion] FOREIGN KEY([IdAvion])
+REFERENCES [dbo].[Avion] ([IdAvion])
+GO
+
+ALTER TABLE [dbo].[Vol] CHECK CONSTRAINT [FK_Vol_Avion]
+GO
+
+ALTER TABLE [dbo].[Vol]  WITH CHECK ADD  CONSTRAINT [FK_Vol_Pilote] FOREIGN KEY([IdPilote])
+REFERENCES [dbo].[Pilote] ([IdPilote])
+GO
+
+ALTER TABLE [dbo].[Vol] CHECK CONSTRAINT [FK_Vol_Pilote]
+GO
+
+
+
+
+
 ```

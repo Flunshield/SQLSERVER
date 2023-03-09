@@ -126,3 +126,8 @@ COM
 Core .Net = SQL server 20017, IIS, ASP.Net, WPF (Blazor, MAUI...)
 
 C# et Transact SQL sont de la famille *.net*.
+
+**Un dataset est une bdd contenant plusieurs tables**
+
+![[Pasted image 20230309143548.png]]
+![[Pasted image 20230309144408.png]]

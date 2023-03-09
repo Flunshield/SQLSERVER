@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+using System.Runtime.Remoting.Contexts;
 
 namespace AirFranceCompagnie
 {
@@ -37,7 +33,28 @@ namespace AirFranceCompagnie
         {
             //addPilote();
             //addAvion();
-            addVol();
+            //addVol();
+            var context = new AirFranceEntities1();
+            var toutLesPilotes = context.Pilote.Select(idPilote => idPilote).ToList();
+            var toutLesAvions = context.Avion.Select(idAvion => idAvion).ToList();
+            Guid test = new Guid("EE018F1D-AFA9-4277-8098-035B97D13C59");
+            searchPilote(test);
+        }
+
+        private static void searchPilote(Guid IdPilote)
+        {
+            var context = new AirFranceEntities1();
+            var toutLesVol = context.Vol.Where(vol => vol.IdPilote == IdPilote).ToList();
+            var volTrouver = toutLesVol.Select(x => x.IdVol);
+            var index = 1;
+            Console.WriteLine("Les vols pour le pilote : " + IdPilote + " sont les suivants : ");
+            foreach (var vol in volTrouver)
+            {
+                Console.WriteLine("Vol " + index + " " + vol);
+                index++;
+
+            }
+            Console.ReadLine();
         }
 
         private static void addVol()
