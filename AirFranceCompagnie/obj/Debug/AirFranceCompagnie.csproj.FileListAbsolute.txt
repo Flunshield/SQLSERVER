@@ -1,0 +1,14 @@
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\AirFranceCompagnie.exe.config
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\AirFranceCompagnie.exe
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\AirFranceCompagnie.pdb
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\EntityFramework.dll
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\EntityFramework.xml
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\bin\Debug\fr\EntityFramework.resources.dll
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\obj\Debug\AirFranceCompagnie.csproj.AssemblyReference.cache
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\obj\Debug\AirFranceCompagnie.csproj.SuggestedBindingRedirects.cache
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\obj\Debug\AirFranceCompagnie.csproj.CoreCompileInputs.cache
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\obj\Debug\AirFranceCompagnie.csproj.CopyComplete
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\obj\Debug\AirFranceCompagnie.exe
+C:\Users\jbert\Documents\MesDonnees\AirFranceCompagnie\obj\Debug\AirFranceCompagnie.pdb
